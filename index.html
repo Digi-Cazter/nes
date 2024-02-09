@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NES Emulator</title>
+</head>
+<body>
+    <h1>NES Emulator</h1>
+    <canvas id="screen" width="256" height="240"></canvas>
+    <p>Real-time PPU framerate: <span id="framerate">0 FPS</span></p>
+
+    <script>
+        const canvas = document.getElementById('screen');
+        const ctx = canvas.getContext('2d');
+
+        const socket = new WebSocket('ws://localhost:3000'); // Replace with your server URL
+
+        // WebSocket event handlers
+        socket.addEventListener('open', (event) => {
+            console.log('WebSocket connection opened');
+        });
+
+        socket.addEventListener('message', (event) => {
+            console.log(`Received message from server: ${event.data}`);
+            // Process messages received from the server to update canvas
+            // Example: render PPU output on the canvas
+            const ppuOutput = event.data; // Replace with your PPU output data
+            renderOnCanvas(ppuOutput);
+        });
+
+        socket.addEventListener('close', (event) => {
+            console.log('WebSocket connection closed');
+        });
+
+        // Function to render PPU output on the canvas
+        function renderOnCanvas(ppuOutput) {
+            // Implement your rendering logic here
+            // Use the ctx (canvas context) to draw PPU output on the canvas
+            // Example: ctx.drawImage(image, x, y);
+
+            // Update the real-time framerate display
+            const framerateSpan = document.getElementById('framerate');
+            framerateSpan.textContent = `${ppuOutput.fps.toFixed(2)} FPS`;
+        }
+
+        // Rest of your JavaScript code for interaction with the server and canvas rendering
+        // ...
+
+        // Define your NES emulator logic here
+        function emulateFrame(limitCycles) {
+            // Implement your NES emulator frame emulation logic here
+            // Use the WebSocket connection to send PPU output to the HTML page
+            // Example: socket.send(ppuOutputData);
+        }
+
+        // Call the emulateFrame function to start emulating frames
+        emulateFrame();
+
+    </script>
+</body>
+</html>
